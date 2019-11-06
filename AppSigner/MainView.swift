@@ -875,9 +875,9 @@ class MainView: NSView, URLSessionDataDelegate, URLSessionDelegate, URLSessionDo
                             setStatus("Unable to read entitlements from provisioning profile")
                             warnings += 1
                         }
-                        if profile.appID != "*" && (newApplicationID != "" && newApplicationID != profile.appID) {
-                            setStatus("Unable to change App ID to \(newApplicationID), provisioning profile won't allow it")
-                            cleanup(tempFolder); return
+                        if profile.appID != "*" && (newApplicationID != "" && newApplicationID != profile.appID) && !newApplicationID.hasPrefix(profile.appID.replacingOccurrences(of: "*", with: "")) {
+                                setStatus("Unable to change App ID to \(newApplicationID), provisioning profile allow only this App ID \(profile.appID)")
+                                cleanup(tempFolder); return
                         }
                     } else {
                         setStatus("Unable to parse provisioning profile, it may be corrupt")
